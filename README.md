@@ -14,6 +14,13 @@ Number Theory and Cryptography (CO313)
 
 - 3_DES in CBC mode
 
+### Installation
+```
+$ pip3 install pycrypto
+```
+
 ### Usage
+
+
 
 ### File Structure
