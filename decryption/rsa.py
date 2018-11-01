@@ -15,7 +15,7 @@ bits = int(input("Enter bits for RSA key generation (powers of 2): "))
 
 private_key, public_key = generate_RSA(bits)
 
-privateWrite = open('../private_key.pem','wb')
-publicWrite = open('public_key.pem','wb')
+privateWrite = open('private_key.pem','wb')
+publicWrite = open('../public_key.pem','wb')
 privateWrite.write(private_key)
 publicWrite.write(public_key)
