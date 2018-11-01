@@ -1,2 +1,6 @@
 *input.txt
-*output.txt
+*cipher.txt
+*iv.txt
+*private*
+*public*
+
