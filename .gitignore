@@ -1,6 +1,6 @@
 *input.txt
 *cipher.txt
 *iv.txt
-*private*
-*public*
-
+*enc_key.txt
+*public_key.pem
+*private_key.pem

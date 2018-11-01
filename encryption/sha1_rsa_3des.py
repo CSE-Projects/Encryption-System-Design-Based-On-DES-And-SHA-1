@@ -1,11 +1,16 @@
 from hashlib import sha1
 from Crypto.Cipher import DES3
+from Crypto.PublicKey import RSA
 from Crypto import Random
 
 # Path of output file
 output_file_path = '../cipher.txt'
 # Path of file holding Initialization vector
 iv_file_path = '../iv.txt'
+# Path of Public key
+pk_file_path = '../public_key.pem'
+# Path of Public key
+enc_key_file_path = '../enc_key.txt'
 
 #============== Plain Text ===========================
 # get path of the plain text
@@ -26,11 +31,29 @@ print('==> SHA1 Result: ' + sha1_plain_text)
 # Add sha1 result to the output file
 with open(output_file_path, "a") as outputFile:
     outputFile.write(sha1_plain_text)
+    outputFile.write('\n')
 
-#============= 3-DES ================================
+#============= RSA + 3-DES ================================
 # 16 byte random key
 key = Random.get_random_bytes(16)
 
+#======== RSA ==========
+public_key = ''
+# Read public key
+with open(pk_file_path, "r") as pkFile:
+    public_key = pkFile.read()
+public_key_obj =  RSA.importKey(public_key)
+# encrypt the key 
+enc_key = public_key_obj.encrypt(key, 32)[0]
+# Add encrypted key to new file
+with open(enc_key_file_path, "ab") as outputFile:
+    outputFile.write(enc_key)
+# print Encrypted key
+print('\n\n==> Encrypted Key for 3-DES:')
+with open(enc_key_file_path, "rb") as inputFile:
+    print(inputFile.read())
+
+#======== 3-DES ==========
 # Initialization vector for DES
 iv = Random.new().read(DES3.block_size)
 
@@ -42,7 +65,7 @@ l = len(plain_text)
 if l % 8 != 0:
     toAdd = 8 - l % 8
     for i in range(toAdd):
-      plain_text += '0'
+      plain_text += ' '
 # get cipher text
 cipher_text = cipher.encrypt(str.encode(plain_text))
 
@@ -51,10 +74,15 @@ with open(output_file_path, "ab") as outputFile:
     outputFile.write(cipher_text)
 # print cipher text
 print('\n\n==> SHA1 + Cipher Text:')
-with open(output_file_path, "rb") as outputFile:
-    print(outputFile.read())
+with open(output_file_path, "rb") as inputFile:
+    print(inputFile.read())
 
 # Add initialization vector to a file
 with open(iv_file_path, "ab") as ivFile:
     ivFile.write(iv)
-print('\n\n== Cipher Text with SHA-1 hash File at: ' + output_file_path)
+
+# print files 
+print('\n\n== Cipher Text with SHA-1 hash File in: ' + output_file_path)
+print('== Encrypted 3-DES key in: ' + enc_key_file_path)
+print('== Initialization vector for 3-DES key in: ' + iv_file_path)
+print('\n\n')
