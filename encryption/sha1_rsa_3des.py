@@ -22,6 +22,13 @@ plain_text = ''
 with open(plain_text_path, 'r') as plainTextFile:
   plain_text = plainTextFile.read()
 
+# Add padding to plain text
+l = len(plain_text)
+if l % 8 != 0:
+    toAdd = 8 - l % 8
+    for i in range(toAdd):
+      plain_text += ' '
+      
 #============ SHA-1 ================================
 
 # get sha-1 result for the plain text data
@@ -29,7 +36,7 @@ sha1_plain_text = sha1(plain_text.encode('utf-8')).hexdigest()
 print('==> SHA1 Result: ' + sha1_plain_text)
 
 # Add sha1 result to the output file
-with open(output_file_path, "a") as outputFile:
+with open(output_file_path, "w") as outputFile:
     outputFile.write(sha1_plain_text)
     outputFile.write('\n')
 
@@ -46,7 +53,7 @@ public_key_obj =  RSA.importKey(public_key)
 # encrypt the key 
 enc_key = public_key_obj.encrypt(key, 32)[0]
 # Add encrypted key to new file
-with open(enc_key_file_path, "ab") as outputFile:
+with open(enc_key_file_path, "wb") as outputFile:
     outputFile.write(enc_key)
 # print Encrypted key
 print('\n\n==> Encrypted Key for 3-DES:')
@@ -61,11 +68,11 @@ iv = Random.new().read(DES3.block_size)
 cipher = DES3.new(key, DES3.MODE_CBC, iv)
 
 # Add padding to plain text
-l = len(plain_text)
-if l % 8 != 0:
-    toAdd = 8 - l % 8
-    for i in range(toAdd):
-      plain_text += ' '
+# l = len(plain_text)
+# if l % 8 != 0:
+#     toAdd = 8 - l % 8
+#     for i in range(toAdd):
+#       plain_text += ' '
 # get cipher text
 cipher_text = cipher.encrypt(str.encode(plain_text))
 
@@ -78,7 +85,7 @@ with open(output_file_path, "rb") as inputFile:
     print(inputFile.read())
 
 # Add initialization vector to a file
-with open(iv_file_path, "ab") as ivFile:
+with open(iv_file_path, "wb") as ivFile:
     ivFile.write(iv)
 
 # print files 
