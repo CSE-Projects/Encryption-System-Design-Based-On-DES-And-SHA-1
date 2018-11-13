@@ -18,6 +18,22 @@ Number Theory and Cryptography (CO313)
 ```
 $ pip3 install pycrypto
 ```
+### Screenshots
+
+#### RSA Key Generation
+<img src="RSA_keys.png">
+
+#### Plaintext
+<img src="plain_text.png">
+
+#### Encryption
+<img src="encryption.png">
+
+#### Encrypted Files
+<img src="encrypted_files.png">
+
+#### Decryption
+<img src="decryption.png">
 
 ### Usage
 
